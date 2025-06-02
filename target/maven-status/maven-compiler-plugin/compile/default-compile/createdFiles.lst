@@ -1,0 +1,13 @@
+ImparOuPar\network\Cliente.class
+ImparOuPar\network\Servidor.class
+ImparOuPar\network\GerenciadorJogadas.class
+ImparOuPar\view\TelaDefinicao.class
+ImparOuPar\view\TelaInicial$1.class
+ImparOuPar\model\Jogada.class
+ImparOuPar\dao\JogadaDao.class
+ImparOuPar\controller\Regras.class
+ImparOuPar\view\TelaResultado.class
+ImparOuPar\view\TelaHistorico.class
+ImparOuPar\network\Config.class
+ImparOuPar\view\TelaInicial$2.class
+ImparOuPar\view\TelaInicial.class
