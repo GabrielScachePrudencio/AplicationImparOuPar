@@ -147,7 +147,8 @@ public class TelaDefinicao extends JFrame {
             dispose();
             TelaResultado resultado = new TelaResultado(jogadaLocal, jogadaRecebida, jogadaVencedora, resultadoConta, nomeDoModo, servidorConexao, servidorEntrada, servidorSaida, suaVez);
             resultado.setVisible(true);
-
+        } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(this, ex.getMessage());    
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erro na comunicação com o servidor. A partida será encerrada.");

@@ -20,6 +20,8 @@
 
 package ImparOuPar.view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ObjectInputStream;
@@ -62,6 +64,7 @@ public class TelaInicial extends JFrame {
     }
     
     public TelaInicial() {
+        
         System.out.println("IP carregado: " + ImparOuPar.network.Config.getIp());
         System.out.println("Porta carregada: " + ImparOuPar.network.Config.getPorta());
         setTitle("Bem vindo ao jogo Par ou Impar Multiplayer");
@@ -76,8 +79,17 @@ public class TelaInicial extends JFrame {
         imprimindoServidor = new JLabel("");
         botaoAvancar = new JButton("Avançar");
 
+        // controla/edita o titulo "Par ou Impar"
+        titulo.setFont(new Font("Verdana", Font.BOLD, 20));
+        titulo.setForeground(Color.BLUE);
         titulo.setBounds(125, 1, 150, 40);
+        
+        // controla/edita o botaoJogar "JOGAR"
+        botaoJogar.setFont(new Font("Verdana",Font.BOLD,20));
+        botaoJogar.setForeground(Color.BLACK);
+        botaoJogar.setBackground(Color.GREEN);
         botaoJogar.setBounds(125, 40, 150, 40);
+        
         botaoConectar.setBounds(125, 40 + 60, 150, 40);
         botaoHistorico.setBounds(125, 40 + 60 * 2, 150, 40);
         imprimindoServidor.setBounds(125 - 20, 40 + 60 * 3, 250, 40);
