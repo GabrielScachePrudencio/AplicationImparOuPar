@@ -10,11 +10,12 @@ public class JogadaDao {
     }
 
     public Jogada DisputaPorSubtracao(Jogada jogada1, Jogada jogada2) {
-        int resultado = jogada1.getValor() - jogada2.getValor();
-        return determinarVencedor(jogada1, jogada2, resultado);
+    int valor1 = jogada1.getValor();
+    int valor2 = jogada2.getValor();
+    int resultado = Math.abs(valor1 - valor2);
+    return determinarVencedor(jogada1, jogada2, resultado);
     }
-    
-    
+      
     public Jogada DisputaPorDivisao(Jogada jogada1, Jogada jogada2) {
         int resultado = jogada1.getValor() / jogada2.getValor();
         return determinarVencedor(jogada1, jogada2, resultado);
