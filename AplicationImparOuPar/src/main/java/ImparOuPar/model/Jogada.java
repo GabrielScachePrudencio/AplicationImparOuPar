@@ -22,8 +22,6 @@ public class Jogada implements Serializable{
         setModoJogo(modoJogo);
     }
 
-    
-    
     public String getNome() {
         return nome;
     }
@@ -67,6 +65,4 @@ public class Jogada implements Serializable{
     public String toString() {
         return "Modo_Jogo: " + modoJogo + ", Nome: " + nome + ", Escolha: " + escolha + ", Valor: " + valor;
     }
-
-    
 }

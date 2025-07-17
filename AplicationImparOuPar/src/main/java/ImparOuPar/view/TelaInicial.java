@@ -1,11 +1,10 @@
 // erro o jogo nao funciona de novo pq ele tenta pegar um aleatorio falha e colocar como nulo o modo de jogo 
 //* nao funciona o jogar novamente acho  q modo nao gera um aleatorio
 //* fazer com q o historico esteja so com um unico pq ta repetindo
-//* fazer um sistema de rank dos maiores vencedores
 // ver se esta o jeito certo de implementar os butoes de cada classe do view ver se nao tem q estar em um arquivo separado 
 // ver se esta certo a parte impletar o run
 // ver se ele pode ser entregue como um pacote ou se para entregar tem q estar dendro de um aplicação java
-//deixar bonito
+
 package ImparOuPar.view;
 
 import java.awt.Color;
@@ -19,7 +18,7 @@ import java.net.Socket;
 import javax.swing.*;
 
 public class TelaInicial extends JFrame {
-
+    
     private JLabel titulo;
     private JButton botaoJogar;
     private JButton botaoConectar;
@@ -62,7 +61,7 @@ public class TelaInicial extends JFrame {
         titulo = new JLabel("Par ou Impar");
         botaoJogar = new JButton("JOGAR");
         botaoConectar = new JButton("Conectar");
-        botaoHistorico = new JButton("Histórico de partidas");
+        botaoHistorico = new JButton("Histórico");
         imprimindoServidor = new JLabel("");
         botaoAvancar = new JButton("Avançar");
 
@@ -72,15 +71,15 @@ public class TelaInicial extends JFrame {
         titulo.setForeground(new Color(33, 33, 33)); 
         titulo.setBounds(125, 1, 150, 40);
 
-        // "boatao jogar"
+        // boatao jogar
         botaoJogar.setFont(new Font("Verdana", Font.BOLD, 20));
         botaoJogar.setForeground(Color.WHITE); 
         botaoJogar.setBackground(new Color(33, 150, 243)); 
-        botaoJogar.setBounds(125, 40, 150, 40);
         
+        botaoJogar.setBounds(125, 180, 150, 40);
         // boatao conectar
         botaoConectar.setFont(new Font("Verdana", Font.BOLD, 20));
-        botaoConectar.setBackground(new Color(33, 150, 243)); // azul bonito
+        botaoConectar.setBackground(new Color(33, 150, 243)); 
         botaoConectar.setForeground(Color.WHITE);
         botaoConectar.setBounds(125, 40 + 60, 150, 40);
         
