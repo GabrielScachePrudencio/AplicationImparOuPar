@@ -53,7 +53,5 @@ public class Config {
             readConfig();
         
         return porta;
-    }
-
-        
+    }    
 }
