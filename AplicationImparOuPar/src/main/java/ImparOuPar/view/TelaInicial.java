@@ -1,25 +1,15 @@
 // erro o jogo nao funciona de novo pq ele tenta pegar um aleatorio falha e colocar como nulo o modo de jogo 
-
 //* nao funciona o jogar novamente acho  q modo nao gera um aleatorio
-
 //* fazer com q o historico esteja so com um unico pq ta repetindo
-
 //* fazer um sistema de rank dos maiores vencedores
-
 // ver se esta o jeito certo de implementar os butoes de cada classe do view ver se nao tem q estar em um arquivo separado 
-
 // ver se esta certo a parte impletar o run
-
 // ver se ele pode ser entregue como um pacote ou se para entregar tem q estar dendro de um aplicação java
-
 //deixar bonito
-
-
-
-
-
 package ImparOuPar.view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ObjectInputStream;
@@ -44,7 +34,6 @@ public class TelaInicial extends JFrame {
 
     private static boolean jaConectou = false;
 
-    
     public boolean isSuaVez() {
         return suaVez;
     }
@@ -60,15 +49,16 @@ public class TelaInicial extends JFrame {
     public static void setJaConectou(boolean valor) {
         jaConectou = valor;
     }
-    
+
     public TelaInicial() {
+
         System.out.println("IP carregado: " + ImparOuPar.network.Config.getIp());
         System.out.println("Porta carregada: " + ImparOuPar.network.Config.getPorta());
         setTitle("Bem vindo ao jogo Par ou Impar Multiplayer");
         setSize(400, 600); // tamanho aumentado
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
-        
+
         titulo = new JLabel("Par ou Impar");
         botaoJogar = new JButton("JOGAR");
         botaoConectar = new JButton("Conectar");
@@ -76,23 +66,50 @@ public class TelaInicial extends JFrame {
         imprimindoServidor = new JLabel("");
         botaoAvancar = new JButton("Avançar");
 
+
+        // Titulo
+        titulo.setFont(new Font("Verdana", Font.BOLD, 20));
+        titulo.setForeground(new Color(33, 33, 33)); 
         titulo.setBounds(125, 1, 150, 40);
+
+        // "boatao jogar"
+        botaoJogar.setFont(new Font("Verdana", Font.BOLD, 20));
+        botaoJogar.setForeground(Color.WHITE); 
+        botaoJogar.setBackground(new Color(33, 150, 243)); 
         botaoJogar.setBounds(125, 40, 150, 40);
+        
+        // boatao conectar
+        botaoConectar.setFont(new Font("Verdana", Font.BOLD, 20));
+        botaoConectar.setBackground(new Color(33, 150, 243)); // azul bonito
+        botaoConectar.setForeground(Color.WHITE);
         botaoConectar.setBounds(125, 40 + 60, 150, 40);
+        
+        // boatao historico
+        botaoHistorico.setFont(new Font("Verdana", Font.BOLD, 20));
+        botaoHistorico.setBackground(new Color(33, 150, 243));
+        botaoHistorico.setForeground(Color.WHITE);
         botaoHistorico.setBounds(125, 40 + 60 * 2, 150, 40);
+        
+        //imprimindoServidor
+        imprimindoServidor.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        imprimindoServidor.setForeground(new Color(33, 33, 33)); 
         imprimindoServidor.setBounds(125 - 20, 40 + 60 * 3, 250, 40);
+        
+        // boatao avancar
+        botaoAvancar.setFont(new Font("Verdana", Font.BOLD, 20));
+        botaoAvancar.setBackground(new Color(33, 150, 243));
+        botaoAvancar.setForeground(Color.WHITE);
         botaoAvancar.setBounds(125, 40 + 60 * 4, 150, 40);
 
         add(titulo);
         add(botaoJogar);
-        
-        
+
         botaoJogar.addActionListener(e -> {
             remove(botaoJogar);
             add(botaoConectar);
             add(imprimindoServidor);
             add(botaoHistorico);
-            
+
             if (isJaConectou()) {
                 botaoConectar.setText("Já conectado");
                 botaoConectar.setEnabled(false);
@@ -100,12 +117,12 @@ public class TelaInicial extends JFrame {
             } else {
                 add(botaoConectar);
             }
-            
+
             repaint();
         });
 
         botaoConectar.addActionListener(e -> {
-            
+
             new Thread(() -> {
                 try {
                     conectar();
@@ -117,7 +134,7 @@ public class TelaInicial extends JFrame {
             remove(botaoConectar);
             remove(botaoHistorico);
         });
-        
+
         botaoHistorico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -131,7 +148,7 @@ public class TelaInicial extends JFrame {
             }
 
         });
-        
+
         botaoAvancar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -145,7 +162,7 @@ public class TelaInicial extends JFrame {
             }
         });
     }
-    
+
     private void conectar() throws Exception {
         imprimindoServidor.setText("Buscando Conexao...");
         Thread.sleep(1000);
@@ -153,23 +170,23 @@ public class TelaInicial extends JFrame {
         servidorConexao = new Socket(InetAddress.getByName(ImparOuPar.network.Config.getIp()), ImparOuPar.network.Config.getPorta());
 
         imprimindoServidor.setText("Enviando dados ao outro jogador...");
-        
+
         servidorSaida = new ObjectOutputStream(servidorConexao.getOutputStream());
         servidorSaida.flush();
         Thread.sleep(1000);
 
         imprimindoServidor.setText("Recebendo dados do outro jogador...");
-        
+
         servidorEntrada = new ObjectInputStream(servidorConexao.getInputStream());
         Thread.sleep(1000);
 
         imprimindoServidor.setText("Conexao Estabelecida!");
-        
+
         String msg = (String) servidorEntrada.readObject();
         String[] info = msg.split(":");
         setSuaVez(info[1].equals("true"));
-        
-        setJaConectou(true); 
+
+        setJaConectou(true);
 
         Thread.sleep(1000);
         add(botaoAvancar);
