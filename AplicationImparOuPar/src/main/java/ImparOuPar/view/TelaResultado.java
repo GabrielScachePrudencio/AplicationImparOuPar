@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -25,38 +27,35 @@ public class TelaResultado extends JFrame {
     private ObjectOutputStream servidorSaida;
     private boolean suaVez;
 
-    private JLabel titulo;
-    private JLabel nome1;
-    private JLabel nome2;
-    private JLabel nome3; //resutlado
-    private JLabel escolha1;
-    private JLabel escolha2;
-    private JLabel escolha3;// resultado
-    private JLabel valor1;
-    private JLabel valor2;
-    private JLabel valor3;// resultado
-    private JLabel valor4;// resultado soma
     private JLabel resultadoDoVencedor;
     private JButton voltar;
+    private Sons sons;
 
-    public TelaResultado(Jogada jogadaLocal, Jogada jogadaRecebida, Jogada jogadaVencedora, int resultadoConta, String nomeDoModo, Socket servidorConexao, ObjectInputStream servidorEntrada, ObjectOutputStream servidorSaida, boolean suaVez) {
-        setTitle("Sistema Principal");
-        setSize(1000, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(null);
+    public TelaResultado(
+        Jogada jogadaLocal, Jogada jogadaRecebida, Jogada jogadaVencedora,
+        int resultadoConta, String nomeDoModo,
+        Socket servidorConexao, ObjectInputStream servidorEntrada, ObjectOutputStream servidorSaida,
+        boolean suaVez
+    ) {
+        this.sons = new Sons(
+            "./sounds/comecar.wav", "./sounds/mover.wav",
+            "./sounds/errar.wav", "./sounds/ganhar.wav", "./sounds/perder.wav"
+        );
 
         this.jogadaLocal = jogadaLocal;
         this.jogadaRecebida = jogadaRecebida;
         this.jogadaVencedora = jogadaVencedora;
-
         this.servidorConexao = servidorConexao;
         this.servidorEntrada = servidorEntrada;
         this.servidorSaida = servidorSaida;
         this.suaVez = suaVez;
         this.nomeDoModo = nomeDoModo;
 
-        // Verifica se o vencedor é o jogadaRecebida (e não o local)
-        // so para criar uma ordem na tabela pois isso afeta a logica do jogo
+        setTitle("Resultado da Partida");
+        setSize(1000, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
         boolean inverter = !jogadaVencedora.getNome().equals(jogadaLocal.getNome());
 
         String nome1 = inverter ? jogadaRecebida.getNome() : jogadaLocal.getNome();
@@ -69,10 +68,10 @@ public class TelaResultado extends JFrame {
         int valor2 = inverter ? jogadaLocal.getValor() : jogadaRecebida.getValor();
 
         String[] colunas = {"-", nome1, nome2, "Resultado"};
-
         Object[][] dados = {
             {"Escolha: ", escolha1, escolha2, jogadaVencedora.getEscolha()},
-            {"Valor: ", valor1, valor2, resultadoConta},};
+            {"Valor: ", valor1, valor2, resultadoConta}
+        };
 
         JTable tabela = new JTable(dados, colunas);
         tabela.setFont(new Font("Verdana", Font.BOLD, 20));
@@ -84,24 +83,33 @@ public class TelaResultado extends JFrame {
         tabela.setEnabled(false);
         JScrollPane scroll = new JScrollPane(tabela);
 
-        
         resultadoDoVencedor = new JLabel("Modo de Jogo: " + nomeDoModo + " | Vencedor: " + jogadaVencedora.getNome());
         resultadoDoVencedor.setFont(new Font("Verdana", Font.BOLD, 20));
         resultadoDoVencedor.setAlignmentX(Component.CENTER_ALIGNMENT);
         resultadoDoVencedor.setBorder(new EmptyBorder(10, 10, 20, 10));
-         
+
         voltar = new JButton("Jogar novamente");
         voltar.setFont(new Font("Verdana", Font.BOLD, 20));
         voltar.setBackground(new Color(33, 150, 243));
         voltar.setForeground(Color.WHITE);
         voltar.setFocusPainted(false);
         voltar.setAlignmentX(Component.CENTER_ALIGNMENT);
-       
-        JLabel titulo = new JLabel("Resultado da Partida", SwingConstants.CENTER);
 
-        // Layout vertical
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        add(titulo);
+        boolean venceu = jogadaLocal.getNome().equals(jogadaVencedora.getNome());
+
+        try {
+            if (venceu) {
+                sons.ganhar();
+            } else {
+                sons.perder();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(TelaResultado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Adiciona mensagem de vitória ou derrota
+        mostrarResultadoPersonalizado(venceu);
+
         add(scroll);
         add(resultadoDoVencedor);
         add(voltar);
@@ -110,34 +118,38 @@ public class TelaResultado extends JFrame {
 
         voltar.addActionListener(e -> {
             try {
-
                 dispose();
                 TelaDefinicao teld = new TelaDefinicao(servidorConexao, servidorEntrada, servidorSaida, suaVez);
                 teld.setVisible(true);
             } catch (Exception ex) {
-                ex.printStackTrace(); // mostra o erro no console
+                ex.printStackTrace();
             }
         });
+    }
 
+    private void mostrarResultadoPersonalizado(boolean venceu) {
+        String mensagem = venceu ? "VOCÊ GANHOU!" : "VOCÊ PERDEU!";
+        Color cor = venceu ? new Color(0, 128, 0) : new Color(200, 0, 0);
+        JLabel msg = new JLabel(mensagem, SwingConstants.CENTER);
+        msg.setFont(new Font("Arial", Font.BOLD, 30));
+        msg.setForeground(cor);
+        JOptionPane.showMessageDialog(this, msg, "Resultado Final", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void salvarDados() {
         try {
-
             FileWriter fw = new FileWriter("src/ImparOuPar/data/historico.json", StandardCharsets.UTF_8, true);
-
             PrintWriter pw = new PrintWriter(fw);
 
             String json = "{"
-                    + "\"Modo_Jogo\":\"" + nomeDoModo + "\","
-                    + "\"nome\":\"" + jogadaVencedora.getNome() + "\","
-                    + "\"escolha\":\"" + jogadaVencedora.getEscolha() + "\","
-                    + "\"valor\":\"" + jogadaVencedora.getValor() + "\""
-                    + "}";
+                + "\"Modo_Jogo\":\"" + nomeDoModo + "\","
+                + "\"nome\":\"" + jogadaVencedora.getNome() + "\","
+                + "\"escolha\":\"" + jogadaVencedora.getEscolha() + "\","
+                + "\"valor\":\"" + jogadaVencedora.getValor() + "\""
+                + "}";
 
             pw.println(json);
             pw.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
