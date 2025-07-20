@@ -1,19 +1,4 @@
-{"Modo_Jogo":"Subtracao","nome":"scac","escolha":"Impar","valor":"5"}
-{"Modo_Jogo":"Subtracao","nome":"scac","escolha":"Impar","valor":"5"}
-{"Modo_Jogo":"Divisao","nome":"b","escolha":"Par","valor":"2"}
-{"Modo_Jogo":"Divisao","nome":"a","escolha":"Impar","valor":"3"}
-{"Modo_Jogo":"Soma","nome":"aa","escolha":"Impar","valor":"2"}
-{"Modo_Jogo":"Soma","nome":"aa","escolha":"Impar","valor":"2"}
-{"Modo_Jogo":"default","nome":"cc","escolha":"Impar","valor":"1"}
-{"Modo_Jogo":"Divisao","nome":"oliver kun","escolha":"Par","valor":"2"}
-{"Modo_Jogo":"Divisao","nome":"oliver kun","escolha":"Par","valor":"2"}
-{"Modo_Jogo":"Soma","nome":"ga","escolha":"Impar","valor":"3"}
-{"Modo_Jogo":"Soma","nome":"ga","escolha":"Impar","valor":"3"}
-{"Modo_Jogo":"Soma","nome":"bbb","escolha":"Par","valor":"22"}
-{"Modo_Jogo":"Soma","nome":"bbb","escolha":"Par","valor":"22"}
-{"Modo_Jogo":"Soma","nome":"xx","escolha":"Impar","valor":"5"}
-{"Modo_Jogo":"Soma","nome":"xx","escolha":"Impar","valor":"5"}
-{"Modo_Jogo":"Soma","nome":"ga","escolha":"Impar","valor":"1"}
-{"Modo_Jogo":"Soma","nome":"ga","escolha":"Impar","valor":"1"}
-{"Modo_Jogo":"Multiplicação","nome":"b","escolha":"Par","valor":"2"}
-{"Modo_Jogo":"Multiplicação","nome":"b","escolha":"Par","valor":"2"}
+{"Modo_Jogo":"Multiplicação","nome vencedor":"laelepar","escolha vencedor":"Par","valor":"1000"}
+{"Modo_Jogo":"Multiplicação","nome vencedor":"laelepar","escolha vencedor":"Par","valor":"1000"}
+{"Modo_Jogo":"Soma","nome vencedor":"1","escolha vencedor":"Impar","valor":"1"}
+{"Modo_Jogo":"Soma","nome vencedor":"1","escolha vencedor":"Impar","valor":"1"}

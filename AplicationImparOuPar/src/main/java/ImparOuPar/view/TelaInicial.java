@@ -54,7 +54,7 @@ public class TelaInicial extends JFrame {
     public TelaInicial() {
 
         try {
-            sons = new Sons("./sounds/comecar.wav", "./sounds/mover.wav", "./sounds/errar.wav", "./sounds/ganhar.wav", "./sounds/perder.wav");
+            sons = new Sons("./sounds/comecar.wav", "./sounds/ganhar.wav", "./sounds/perder.wav");
             
             System.out.println("IP carregado: " + ImparOuPar.network.Config.getIp());
             System.out.println("Porta carregada: " + ImparOuPar.network.Config.getPorta());

@@ -4,9 +4,13 @@ import ImparOuPar.model.Jogada;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -32,15 +36,12 @@ public class TelaResultado extends JFrame {
     private Sons sons;
 
     public TelaResultado(
-        Jogada jogadaLocal, Jogada jogadaRecebida, Jogada jogadaVencedora,
-        int resultadoConta, String nomeDoModo,
-        Socket servidorConexao, ObjectInputStream servidorEntrada, ObjectOutputStream servidorSaida,
-        boolean suaVez
+            Jogada jogadaLocal, Jogada jogadaRecebida, Jogada jogadaVencedora,
+            int resultadoConta, String nomeDoModo,
+            Socket servidorConexao, ObjectInputStream servidorEntrada, ObjectOutputStream servidorSaida,
+            boolean suaVez
     ) {
-        this.sons = new Sons(
-            "./sounds/comecar.wav", "./sounds/mover.wav",
-            "./sounds/errar.wav", "./sounds/ganhar.wav", "./sounds/perder.wav"
-        );
+        sons = new Sons("./sounds/comecar.wav", "./sounds/ganhar.wav", "./sounds/perder.wav");
 
         this.jogadaLocal = jogadaLocal;
         this.jogadaRecebida = jogadaRecebida;
@@ -137,21 +138,37 @@ public class TelaResultado extends JFrame {
     }
 
     public void salvarDados() {
-        try {
-            FileWriter fw = new FileWriter("src/ImparOuPar/data/historico.json", StandardCharsets.UTF_8, true);
-            PrintWriter pw = new PrintWriter(fw);
+        // Imprimir no log quando metodo é chamado
+        System.out.println(">>> Metodo salvarDados() chamado");
 
-            String json = "{"
+        String caminho = "C:\\Users\\Windows\\Desktop\\trabalho java imparoupar\\AplicationImparOuPares\\AplicationImparOuPar\\src\\main\\java\\ImparOuPar\\data\\historico.json";
+
+        // Criar pasta se não existir
+        File pasta = new File("C:\\Users\\Windows\\Desktop\\trabalho java imparoupar\\AplicationImparOuPares\\AplicationImparOuPar\\src\\main\\java\\ImparOuPar\\data");
+        if (!pasta.exists()) {
+            boolean criada = pasta.mkdirs();
+            if (!criada) {
+                System.out.println("Não foi possível criar a pasta!");
+                return;
+            }
+        }
+
+        String json = "{"
                 + "\"Modo_Jogo\":\"" + nomeDoModo + "\","
-                + "\"nome\":\"" + jogadaVencedora.getNome() + "\","
-                + "\"escolha\":\"" + jogadaVencedora.getEscolha() + "\","
+                + "\"nome vencedor\":\"" + jogadaVencedora.getNome() + "\","
+                + "\"escolha vencedor\":\"" + jogadaVencedora.getEscolha() + "\","
                 + "\"valor\":\"" + jogadaVencedora.getValor() + "\""
                 + "}";
 
+        try (OutputStreamWriter osw = new OutputStreamWriter(
+                new FileOutputStream(caminho, true), StandardCharsets.UTF_8); BufferedWriter bw = new BufferedWriter(osw); PrintWriter pw = new PrintWriter(bw)) {
+
             pw.println(json);
-            pw.close();
-        } catch (Exception e) {
+            System.out.println("Dados salvos com sucesso no arquivo: " + caminho);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

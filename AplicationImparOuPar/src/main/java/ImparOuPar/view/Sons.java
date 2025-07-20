@@ -7,12 +7,10 @@ import javax.sound.sampled.Clip;
 
 public class Sons {
     
-    private final File comecar, mover, errar, ganhar, perder;
+    private final File comecar, ganhar, perder;
 
-    public Sons(String comecar, String mover, String errar, String ganhar, String perder) {
+    public Sons(String comecar, String ganhar, String perder) {
         this.comecar = new File( comecar );
-        this.mover = new File( mover );
-        this.errar = new File( errar );
         this.ganhar = new File( ganhar );
         this.perder = new File( perder );
     }
@@ -25,14 +23,6 @@ public class Sons {
     
     public void comecar() throws Exception {
         play(comecar);
-    }
-    
-    public void mover() throws Exception {
-        play(mover);
-    }
-    
-    public void errar() throws Exception {
-        play(errar);
     }
     
     public void ganhar() throws Exception {
