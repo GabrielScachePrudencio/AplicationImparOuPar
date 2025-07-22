@@ -84,6 +84,7 @@ public class TelaDefinicao extends JFrame {
     }
 
     private void processarJogada() {
+        System.out.println("processarJogada chamado");
         String nome = campoNome.getText().trim();
         String escolha = comboEscolha.getSelectedItem().toString();
         String valorStr = campoValor.getText().trim();
