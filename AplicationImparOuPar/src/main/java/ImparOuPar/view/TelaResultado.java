@@ -1,26 +1,23 @@
+// Pacote e imports
 package ImparOuPar.view;
 
 import ImparOuPar.model.Jogada;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class TelaResultado extends JFrame {
 
+    // Variáveis principais
     private String nomeDoModo;
     private Jogada jogadaLocal;
     private Jogada jogadaRecebida;
@@ -41,8 +38,11 @@ public class TelaResultado extends JFrame {
             Socket servidorConexao, ObjectInputStream servidorEntrada, ObjectOutputStream servidorSaida,
             boolean suaVez
     ) {
+        
+        // Sons do jogo
         sons = new Sons("./sounds/comecar.wav", "./sounds/ganhar.wav", "./sounds/perder.wav");
 
+        // Atribui os dados recebidos
         this.jogadaLocal = jogadaLocal;
         this.jogadaRecebida = jogadaRecebida;
         this.jogadaVencedora = jogadaVencedora;
@@ -52,13 +52,16 @@ public class TelaResultado extends JFrame {
         this.suaVez = suaVez;
         this.nomeDoModo = nomeDoModo;
 
+        // Configuração da janela
         setTitle("Resultado da Partida");
         setSize(1000, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+        // Define quem aparece primeiro na tabela (ganhador ou perdedor)
         boolean inverter = !jogadaVencedora.getNome().equals(jogadaLocal.getNome());
 
+        // Prepara os dados da tabela
         String nome1 = inverter ? jogadaRecebida.getNome() : jogadaLocal.getNome();
         String nome2 = inverter ? jogadaLocal.getNome() : jogadaRecebida.getNome();
 
@@ -68,12 +71,14 @@ public class TelaResultado extends JFrame {
         int valor1 = inverter ? jogadaRecebida.getValor() : jogadaLocal.getValor();
         int valor2 = inverter ? jogadaLocal.getValor() : jogadaRecebida.getValor();
 
+        // Cabeçalhos e dados da tabela
         String[] colunas = {"-", nome1, nome2, "Resultado"};
         Object[][] dados = {
             {"Escolha: ", escolha1, escolha2, jogadaVencedora.getEscolha()},
             {"Valor: ", valor1, valor2, resultadoConta}
         };
 
+        // Criação da tabela
         JTable tabela = new JTable(dados, colunas);
         tabela.setFont(new Font("Verdana", Font.BOLD, 20));
         tabela.setRowHeight(30);
@@ -84,11 +89,13 @@ public class TelaResultado extends JFrame {
         tabela.setEnabled(false);
         JScrollPane scroll = new JScrollPane(tabela);
 
+        // Exibe o nome do vencedor
         resultadoDoVencedor = new JLabel("Modo de Jogo: " + nomeDoModo + " | Vencedor: " + jogadaVencedora.getNome());
         resultadoDoVencedor.setFont(new Font("Verdana", Font.BOLD, 20));
         resultadoDoVencedor.setAlignmentX(Component.CENTER_ALIGNMENT);
         resultadoDoVencedor.setBorder(new EmptyBorder(10, 10, 20, 10));
 
+        // Botão de voltar
         voltar = new JButton("Jogar novamente");
         voltar.setFont(new Font("Verdana", Font.BOLD, 20));
         voltar.setBackground(new Color(33, 150, 243));
@@ -96,6 +103,7 @@ public class TelaResultado extends JFrame {
         voltar.setFocusPainted(false);
         voltar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Verifica se venceu e toca som
         boolean venceu = jogadaLocal.getNome().equals(jogadaVencedora.getNome());
 
         try {
@@ -105,18 +113,21 @@ public class TelaResultado extends JFrame {
                 sons.perder();
             }
         } catch (Exception ex) {
-            Logger.getLogger(TelaResultado.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(); // erro ao tocar som
         }
 
-        // Adiciona mensagem de vitória ou derrota
+        // Mensagem "você ganhou" ou "você perdeu"
         mostrarResultadoPersonalizado(venceu);
 
+        // Adiciona elementos à tela
         add(scroll);
         add(resultadoDoVencedor);
         add(voltar);
 
+        // Salva os dados no histórico
         salvarDados();
 
+        // Ação do botão "voltar"
         voltar.addActionListener(e -> {
             try {
                 dispose();
@@ -128,6 +139,7 @@ public class TelaResultado extends JFrame {
         });
     }
 
+    // Mostra pop-up com o resultado
     private void mostrarResultadoPersonalizado(boolean venceu) {
         String mensagem = venceu ? "VOCÊ GANHOU!" : "VOCÊ PERDEU!";
         Color cor = venceu ? new Color(0, 128, 0) : new Color(200, 0, 0);
@@ -137,13 +149,13 @@ public class TelaResultado extends JFrame {
         JOptionPane.showMessageDialog(this, msg, "Resultado Final", JOptionPane.PLAIN_MESSAGE);
     }
 
+    // Salva o resultado da partida num arquivo .json
     public void salvarDados() {
-        // Imprimir no log quando metodo é chamado
         System.out.println(">>> Metodo salvarDados() chamado");
 
-        String caminho = "C:\\Users\\Windows\\Desktop\\trabalho java imparoupar\\AplicationImparOuPares\\AplicationImparOuPar\\src\\main\\java\\ImparOuPar\\data\\historico.json";
+        String caminho = "C:\\Users\\Windows\\OneDrive\\Desktop\\trabalho java imparoupar\\AplicationImparOuPares\\AplicationImparOuPar\\src\\main\\java\\ImparOuPar\\data\\historico.json";
 
-        // Criar pasta se não existir
+        // Cria pasta se não existir
         File pasta = new File("C:\\Users\\Windows\\Desktop\\trabalho java imparoupar\\AplicationImparOuPares\\AplicationImparOuPar\\src\\main\\java\\ImparOuPar\\data");
         if (!pasta.exists()) {
             boolean criada = pasta.mkdirs();
@@ -153,6 +165,7 @@ public class TelaResultado extends JFrame {
             }
         }
 
+        // Conteúdo em formato JSON
         String json = "{"
                 + "\"Modo_Jogo\":\"" + nomeDoModo + "\","
                 + "\"nome vencedor\":\"" + jogadaVencedora.getNome() + "\","
@@ -160,15 +173,15 @@ public class TelaResultado extends JFrame {
                 + "\"valor\":\"" + jogadaVencedora.getValor() + "\""
                 + "}";
 
-        try (OutputStreamWriter osw = new OutputStreamWriter(
-                new FileOutputStream(caminho, true), StandardCharsets.UTF_8); BufferedWriter bw = new BufferedWriter(osw); PrintWriter pw = new PrintWriter(bw)) {
-
+        // Salva no arquivo
+        try {
+            FileWriter fw = new FileWriter(caminho, true); // 'true' adiciona ao final
+            PrintWriter pw = new PrintWriter(fw);
             pw.println(json);
+            pw.close();
             System.out.println("Dados salvos com sucesso no arquivo: " + caminho);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
