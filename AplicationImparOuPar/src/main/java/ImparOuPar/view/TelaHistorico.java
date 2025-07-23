@@ -5,6 +5,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -14,7 +17,27 @@ public class TelaHistorico extends JFrame {
     private JButton voltar;
     private JScrollPane scrollPane;
 
+    private Socket servidorConexao;
+    private ObjectInputStream servidorEntrada;
+    private ObjectOutputStream servidorSaida;
+    private boolean suaVez;
+
+    
+    public TelaHistorico(Socket socket, ObjectInputStream entrada, ObjectOutputStream saida, boolean suaVez) {
+        this.servidorConexao = socket;
+        this.servidorEntrada = entrada;
+        this.servidorSaida = saida;
+        this.suaVez = suaVez;
+        
+        carregar();
+    }
+
+    
     public TelaHistorico() {
+        carregar();
+    }
+
+    private void carregar(){
         setTitle("Histórico de Jogadas");
         setSize(450, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,13 +69,13 @@ public class TelaHistorico extends JFrame {
 
         voltar.addActionListener((ActionEvent e) -> {
             dispose();
-            TelaInicial tela = new TelaInicial();
+            TelaInicial tela = new TelaInicial(servidorConexao, servidorEntrada, servidorSaida, suaVez);
             tela.setVisible(true);
         });
 
         setVisible(true);
     }
-
+    
     public String getDados() {
         File f = new File("src/main/java/ImparOuPar/data/historico.json");
         StringBuilder sb = new StringBuilder();
@@ -76,8 +99,8 @@ public class TelaHistorico extends JFrame {
                 String linha = sc.nextLine().trim();
                 if (!linha.isEmpty()) {
                     String modo = extrairValor(linha, "Modo_Jogo");
-                    String nome = extrairValor(linha, "nome");
-                    String escolha = extrairValor(linha, "escolha");
+                    String nome = extrairValor(linha, "nome vencedor");
+                    String escolha = extrairValor(linha, "escolha vencedor");
                     String valor = extrairValor(linha, "valor");
                     int valor2 = Integer.parseInt(valor);
 

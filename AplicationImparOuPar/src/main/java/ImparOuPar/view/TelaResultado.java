@@ -125,7 +125,9 @@ public class TelaResultado extends JFrame {
         add(voltar);
 
         // Salva os dados no histórico
-        salvarDados();
+        if (jogadaLocal.getNome().equals(jogadaVencedora.getNome())) {
+            salvarDados();
+        }
 
         // Ação do botão "voltar"
         voltar.addActionListener(e -> {
@@ -153,10 +155,10 @@ public class TelaResultado extends JFrame {
     public void salvarDados() {
         System.out.println(">>> Metodo salvarDados() chamado");
 
-        String caminho = "C:\\Users\\Windows\\OneDrive\\Desktop\\trabalho java imparoupar\\AplicationImparOuPares\\AplicationImparOuPar\\src\\main\\java\\ImparOuPar\\data\\historico.json";
+        String caminho = "src/main/java/ImparOuPar/data/historico.json";
 
         // Cria pasta se não existir
-        File pasta = new File("C:\\Users\\Windows\\Desktop\\trabalho java imparoupar\\AplicationImparOuPares\\AplicationImparOuPar\\src\\main\\java\\ImparOuPar\\data");
+        File pasta = new File("src/main/java/ImparOuPar/data");
         if (!pasta.exists()) {
             boolean criada = pasta.mkdirs();
             if (!criada) {

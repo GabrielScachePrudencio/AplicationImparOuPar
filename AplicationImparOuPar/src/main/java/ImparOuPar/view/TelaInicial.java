@@ -51,9 +51,26 @@ public class TelaInicial extends JFrame {
         jaConectou = valor;
     }
 
+    public TelaInicial(Socket socket, ObjectInputStream entrada, ObjectOutputStream saida, boolean suaVez) {
+       this.servidorConexao = socket;
+       this.servidorEntrada = entrada;
+       this.servidorSaida = saida;
+       this.suaVez = suaVez;
+       // inicializa a UI
+       initUI();
+   }
+
+        
+        
     public TelaInicial() {
 
+        initUI();
+        
+    }
+
+    private void initUI(){
         try {
+            
             sons = new Sons("./sounds/comecar.wav", "./sounds/ganhar.wav", "./sounds/perder.wav");
             
             System.out.println("IP carregado: " + ImparOuPar.network.Config.getIp());
@@ -143,7 +160,7 @@ public class TelaInicial extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     try {
                         dispose(); // Fecha tela inicial
-                        TelaHistorico tela = new TelaHistorico();
+                        TelaHistorico tela = new TelaHistorico(servidorConexao, servidorEntrada, servidorSaida, suaVez);
                         tela.setVisible(true);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao iniciar o jogo: " + ex.getMessage());
@@ -169,7 +186,7 @@ public class TelaInicial extends JFrame {
             Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private void conectar() throws Exception {
         imprimindoServidor.setText("Buscando Conexao...");
         Thread.sleep(1000);
@@ -197,6 +214,6 @@ public class TelaInicial extends JFrame {
 
         Thread.sleep(1000);
         add(botaoAvancar);
-        repaint(); // Atualiza tela pra mostrar botão
+        repaint();
     }
 }
