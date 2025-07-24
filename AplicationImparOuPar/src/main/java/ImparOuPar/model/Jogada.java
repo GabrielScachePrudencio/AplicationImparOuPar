@@ -39,10 +39,10 @@ public class Jogada implements Serializable{
     }
 
     public void setValor(int valor){
-         if (valor > 0) {
+        if (valor >= 0) {
             this.valor = valor;
         }else{
-            throw new IllegalArgumentException("Numero deve ser positivo!");
+          throw new IllegalArgumentException("Numero deve ser positivo!");
         }
     }
 

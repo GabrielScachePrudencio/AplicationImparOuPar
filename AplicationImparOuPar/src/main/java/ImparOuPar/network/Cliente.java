@@ -5,7 +5,7 @@ import ImparOuPar.view.TelaInicial;
 
 public class Cliente  {
     public static void main(String[] args) throws Exception{
-        //ARRUMAR O IP NO CONFIG.XML
+        //TROQUE O IP NO CONFIG.XML
         TelaInicial telai = new TelaInicial();
         telai.setVisible(true);
     }

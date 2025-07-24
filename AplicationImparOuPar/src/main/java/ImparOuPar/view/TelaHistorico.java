@@ -44,7 +44,7 @@ public class TelaHistorico extends JFrame {
         setLayout(null);
         setLocationRelativeTo(null); // Centraliza a janela
 
-        titulo = new JLabel("📜 Histórico de Jogadas");
+        titulo = new JLabel("📜 Histórico de Campeões");
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
         titulo.setBounds(110, 10, 250, 30);
         add(titulo);
