@@ -1,9 +1,3 @@
-// erro o jogo nao funciona de novo pq ele tenta pegar um aleatorio falha e colocar como nulo o modo de jogo 
-//* nao funciona o jogar novamente acho  q modo nao gera um aleatorio
-//* fazer com q o historico esteja so com um unico pq ta repetindo
-// ver se esta o jeito certo de implementar os butoes de cada classe do view ver se nao tem q estar em um arquivo separado 
-// ver se esta certo a parte impletar o run
-// ver se ele pode ser entregue como um pacote ou se para entregar tem q estar dendro de um aplicação java
 package ImparOuPar.view;
 
 import java.awt.Color;
@@ -81,6 +75,7 @@ public class TelaInicial extends JFrame {
             setLayout(null);
             
             sons.comecar();
+            
             titulo = new JLabel("Par ou Impar");
             botaoJogar = new JButton("JOGAR");
             botaoConectar = new JButton("Conectar");
