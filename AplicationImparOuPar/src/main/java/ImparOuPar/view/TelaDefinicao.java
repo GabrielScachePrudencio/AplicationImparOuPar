@@ -220,32 +220,39 @@ public class TelaDefinicao extends JFrame {
 
     private void verificarVencedor() {
         String modo = jogadaLocal.getModoJogo().toLowerCase();
+        Jogada jogador1 = jogadaLocal.getNome().compareTo(jogadaRecebida.getNome()) < 0 ? jogadaLocal : jogadaRecebida;
+        Jogada jogador2 = jogador1 == jogadaLocal ? jogadaRecebida : jogadaLocal;
 
         switch (modo) {
             case "soma":
                 nomeDoModo = "Soma";
                 jogadaVencedora = regras.DisputaPorSoma(jogadaLocal, jogadaRecebida);
-                resultadoConta = jogadaLocal.getValor() + jogadaRecebida.getValor();
+                resultadoConta = jogador1.getValor() + jogador2.getValor();
                 break;
             case "subtracao":
                 nomeDoModo = "Subtração";
                 jogadaVencedora = regras.DisputaPorSubtracao(jogadaLocal, jogadaRecebida);
-                resultadoConta = jogadaLocal.getValor() - jogadaRecebida.getValor();
+                resultadoConta = jogador1.getValor() - jogador2.getValor();
                 break;
             case "divisao":
                 nomeDoModo = "Divisão";
                 jogadaVencedora = regras.DisputaPorDivisao(jogadaLocal, jogadaRecebida);
-                resultadoConta = jogadaLocal.getValor() / jogadaRecebida.getValor();
+                int maior = Math.max(jogador1.getValor(), jogador2.getValor());
+                int menor = Math.min(jogador1.getValor(), jogador2.getValor());
+                resultadoConta = menor != 0 ? maior / menor : 0;
+                if(resultadoConta == 0){
+                    jogadaVencedora.setEscolha("Par");
+                }
                 break;
             case "multiplicacao":
                 nomeDoModo = "Multiplicação";
                 jogadaVencedora = regras.DisputaPorMultiplicacao(jogadaLocal, jogadaRecebida);
-                resultadoConta = jogadaLocal.getValor() * jogadaRecebida.getValor();
+                resultadoConta = jogador1.getValor() * jogador2.getValor();
                 break;
             default:
                 nomeDoModo = "Soma";
                 jogadaVencedora = regras.DisputaPorSoma(jogadaLocal, jogadaRecebida);
-                resultadoConta = jogadaLocal.getValor() + jogadaRecebida.getValor();
+                resultadoConta = jogador1.getValor() + jogador2.getValor();
                 break;
         }
     }

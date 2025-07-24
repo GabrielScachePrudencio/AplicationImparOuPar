@@ -16,7 +16,11 @@ public class JogadaDao {
     }
 
     public Jogada DisputaPorDivisao(Jogada jogada1, Jogada jogada2) {
-        int resultado = Math.abs(jogada1.getValor() / jogada2.getValor());
+        int maior = Math.max(jogada1.getValor(), jogada2.getValor());
+        int menor = Math.min(jogada1.getValor(), jogada2.getValor());
+
+       
+        int resultado = maior / menor;
         return determinarVencedor(jogada1, jogada2, resultado);
     }
 

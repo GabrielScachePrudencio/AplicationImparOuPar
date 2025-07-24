@@ -59,7 +59,7 @@ public class TelaResultado extends JFrame {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         // Define quem aparece primeiro na tabela (ganhador ou perdedor)
-        boolean inverter = !jogadaVencedora.getNome().equals(jogadaLocal.getNome());
+        boolean inverter = jogadaLocal.getNome().compareTo(jogadaRecebida.getNome()) > 0;
 
         // Prepara os dados da tabela
         String nome1 = inverter ? jogadaRecebida.getNome() : jogadaLocal.getNome();
